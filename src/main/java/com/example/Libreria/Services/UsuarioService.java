@@ -1,0 +1,24 @@
+package com.example.Libreria.Services;
+
+import com.example.Libreria.Entity.Usuario;
+import com.example.Libreria.Repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class UsuarioService {
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    public List<Usuario> obtenerTodos(){
+        return usuarioRepository.findAll();
+    }
+
+    public Usuario guardar(Usuario usuario){
+        return usuarioRepository.save(usuario);
+    }
+
+}
