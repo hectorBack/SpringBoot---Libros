@@ -3,6 +3,7 @@ package com.example.Libreria.Controllers;
 import com.example.Libreria.Entity.Prestamo;
 import com.example.Libreria.Services.PrestamoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,17 @@ public class PrestamoController {
     @PostMapping("/prestar")
     public ResponseEntity<Prestamo> prestarLibro(@RequestBody Prestamo prestamo) {
         return new ResponseEntity<>(prestamoService.realizarPrestamo(prestamo), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Long id){
+        try {
+            prestamoService.eliminar(id);
+            return ResponseEntity.ok("Prestamo eliminado correctamente");
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Prestamo con ID " + id + "no encontrado");
+        }
     }
 
     @PutMapping("/{id}/devolver")

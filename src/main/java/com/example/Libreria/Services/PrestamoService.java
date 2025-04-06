@@ -28,6 +28,10 @@ public class PrestamoService {
         return prestamoRepository.save(prestamo);
     }
 
+    public void eliminar (Long id){
+        prestamoRepository.deleteById(id);
+    }
+
     public Prestamo realizarPrestamo(Prestamo prestamo) {
         Libro libro = libroRepository.findById(prestamo.getLibro().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Libro no encontrado"));

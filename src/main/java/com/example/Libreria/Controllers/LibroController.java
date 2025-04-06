@@ -3,6 +3,7 @@ package com.example.Libreria.Controllers;
 import com.example.Libreria.Entity.Libro;
 import com.example.Libreria.Services.LibroService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +34,13 @@ public class LibroController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        libroService.eliminar(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        try {
+            libroService.eliminar(id);
+            return ResponseEntity.ok("Libro eliminado correctamente");
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Libro con ID " + id + " no encontrado");
+        }
     }
 }

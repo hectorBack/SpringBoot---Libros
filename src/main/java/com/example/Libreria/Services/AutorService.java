@@ -21,4 +21,8 @@ public class AutorService {
         return autorRepository.save(autor);
     }
 
+    public void eliminar(Long id) {
+        autorRepository.deleteById(id);
+    }
+
 }
