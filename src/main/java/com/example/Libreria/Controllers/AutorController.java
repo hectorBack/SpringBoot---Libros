@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/autores")
@@ -24,9 +26,16 @@ public class AutorController {
     }
 
     @PostMapping
-    public Autor guardar(@RequestBody Autor autor) {
-        return autorService.guardar(autor);
+    public ResponseEntity<Map<String, Object>> guardar(@RequestBody Autor autor) {
+        Autor autorGuardado = autorService.guardar(autor);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("mensaje", "Autor registrado con éxito");
+        response.put("autor", autorGuardado);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id){

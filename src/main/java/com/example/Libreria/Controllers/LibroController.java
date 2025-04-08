@@ -1,5 +1,6 @@
 package com.example.Libreria.Controllers;
 
+import com.example.Libreria.Entity.Categoria;
 import com.example.Libreria.Entity.Libro;
 import com.example.Libreria.Services.LibroService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -29,8 +32,14 @@ public class LibroController {
     }
 
     @PostMapping
-    public ResponseEntity<Libro> guardar(@RequestBody Libro libro) {
-        return new ResponseEntity<>(libroService.guardar(libro), HttpStatus.CREATED);
+    public ResponseEntity<Map<String, Object>> guardar(@RequestBody Libro libro) {
+        Libro libroGuardado = libroService.guardar(libro);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("mensaje", "Libro registradp con éxito");
+        response.put("libro", libroGuardado);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @DeleteMapping("/{id}")

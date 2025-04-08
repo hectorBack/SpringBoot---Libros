@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/categorias")
@@ -23,10 +25,17 @@ public class CategoriaController {
         return categoriaService.obtenerTodos();
     }
 
-    @PostMapping("/nuevo")
-    public Categoria guardar(@RequestBody Categoria categoria) {
-        return categoriaService.guardar(categoria);
+    @PostMapping
+    public ResponseEntity<Map<String, Object>> guardar(@RequestBody Categoria categoria) {
+        Categoria categoriaGuardado = categoriaService.guardar(categoria);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("mensaje", "Categoria registrada con éxito");
+        response.put("categoria", categoriaGuardado);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
