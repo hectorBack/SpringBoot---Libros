@@ -33,6 +33,34 @@ public class PrestamoService {
         return prestamoRepository.save(prestamo);
     }
 
+    public Prestamo actualizar (Long id, Prestamo prestamoActualizado){
+        Prestamo prestamoExistente = prestamoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Prestamo con ID " + id + " no encontrado"));
+
+        // Actualizamos los campos necesarios
+        if (prestamoActualizado.getUsuario() != null) {
+            prestamoExistente.setUsuario(prestamoActualizado.getUsuario());
+        }
+
+        if (prestamoActualizado.getLibro() != null) {
+            prestamoExistente.setLibro(prestamoActualizado.getLibro());
+        }
+
+        if (prestamoActualizado.getFechaPrestamo() != null) {
+            prestamoExistente.setFechaPrestamo(prestamoActualizado.getFechaPrestamo());
+        }
+
+        if (prestamoActualizado.getFechaDevolucion() != null) {
+            prestamoExistente.setFechaDevolucion(prestamoActualizado.getFechaDevolucion());
+        }
+
+        if (prestamoActualizado.getEstado() != null) {
+            prestamoExistente.setEstado(prestamoActualizado.getEstado());
+        }
+
+        return prestamoRepository.save(prestamoExistente);
+    }
+
     public void eliminar (Long id){
         prestamoRepository.deleteById(id);
     }

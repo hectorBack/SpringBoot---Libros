@@ -30,6 +30,18 @@ public class LibroService {
         return libroRepository.save(libro);
     }
 
+    public Libro actualizar(Long id, Libro libroActualizado){
+        Libro libroExistente = libroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Libro con ID " + id + " no encontrado"));
+
+        libroExistente.setTitulo(libroActualizado.getTitulo());
+        libroExistente.setAutor(libroActualizado.getAutor());
+        libroExistente.setCategoria(libroActualizado.getCategoria());
+        libroExistente.setCantidadDisponible(libroActualizado.getCantidadDisponible());
+
+        return libroRepository.save(libroExistente);
+    }
+
     public void eliminar(Long id){
         libroRepository.deleteById(id);
     }

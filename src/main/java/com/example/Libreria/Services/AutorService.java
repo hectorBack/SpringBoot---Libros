@@ -26,6 +26,17 @@ public class AutorService {
         return autorRepository.save(autor);
     }
 
+    public Autor actualizar(Long id, Autor autorActualizado) {
+        Autor autorExistente = autorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Autor con ID " + id + " no encontrado"));
+
+        autorExistente.setNombre(autorActualizado.getNombre());
+        autorExistente.setNacionalidad(autorActualizado.getNacionalidad());
+
+        return autorRepository.save(autorExistente);
+    }
+
+
     public void eliminar(Long id) {
         autorRepository.deleteById(id);
     }
