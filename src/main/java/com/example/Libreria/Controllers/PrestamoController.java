@@ -51,6 +51,18 @@ public class PrestamoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarPrestamo(@PathVariable Long id, @RequestBody Prestamo prestamoActualizado) {
+        try {
+            Prestamo prestamo = prestamoService.actualizar(id, prestamoActualizado);
+            return ResponseEntity.ok(prestamo);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("mensaje", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        }
+    }
+
     @PostMapping("/prestar")
     public ResponseEntity<Prestamo> prestarLibro(@RequestBody Prestamo prestamo) {
         return new ResponseEntity<>(prestamoService.realizarPrestamo(prestamo), HttpStatus.CREATED);

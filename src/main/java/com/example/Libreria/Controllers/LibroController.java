@@ -51,6 +51,18 @@ public class LibroController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarLibro(@PathVariable Long id, @RequestBody Libro libroActualizado) {
+        try {
+            Libro libro = libroService.actualizar(id, libroActualizado);
+            return ResponseEntity.ok(libro);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("mensaje", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
         try {

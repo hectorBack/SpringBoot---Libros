@@ -50,6 +50,18 @@ public class AutorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarAutor(@PathVariable Long id, @RequestBody Autor autorActualizado) {
+        try {
+            Autor autor = autorService.actualizar(id, autorActualizado);
+            return ResponseEntity.ok(autor);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("mensaje", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        }
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id){
