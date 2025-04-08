@@ -1,5 +1,6 @@
 package com.example.Libreria.Controllers;
 
+import com.example.Libreria.Entity.Autor;
 import com.example.Libreria.Entity.Libro;
 import com.example.Libreria.Entity.Prestamo;
 import com.example.Libreria.Services.PrestamoService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/prestamos")
@@ -23,6 +25,19 @@ public class PrestamoController {
     @GetMapping
     public List<Prestamo> listar() {
         return prestamoService.obtenerTodos();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPorId(@PathVariable Long id){
+        Optional<Prestamo> prestamo = prestamoService.obtenerPorId(id);
+
+        if (prestamo.isPresent()) {
+            return ResponseEntity.ok(prestamo.get());
+        } else {
+            Map<String, String> error = new HashMap<>();
+            error.put("mensaje", "Prestamo con ID " + id + " no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        }
     }
 
     @PostMapping

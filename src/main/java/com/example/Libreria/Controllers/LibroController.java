@@ -1,5 +1,6 @@
 package com.example.Libreria.Controllers;
 
+import com.example.Libreria.Entity.Autor;
 import com.example.Libreria.Entity.Categoria;
 import com.example.Libreria.Entity.Libro;
 import com.example.Libreria.Services.LibroService;
@@ -27,8 +28,16 @@ public class LibroController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Libro> obtenerPorId(@PathVariable Long id){
-        return libroService.obtenerPorId(id);
+    public ResponseEntity<?> obtenerPorId(@PathVariable Long id){
+        Optional<Libro> libro = libroService.obtenerPorId(id);
+
+        if (libro.isPresent()) {
+            return ResponseEntity.ok(libro.get());
+        } else {
+            Map<String, String> error = new HashMap<>();
+            error.put("mensaje", "Libro con ID " + id + " no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        }
     }
 
     @PostMapping

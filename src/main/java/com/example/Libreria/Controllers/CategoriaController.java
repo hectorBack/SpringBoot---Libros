@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/categorias")
@@ -24,6 +25,20 @@ public class CategoriaController {
     public List<Categoria> listar() {
         return categoriaService.obtenerTodos();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPorId(@PathVariable Long id){
+        Optional<Categoria> categoria = categoriaService.obtenerPorId(id);
+
+        if (categoria.isPresent()){
+            return ResponseEntity.ok(categoria.get());
+        } else {
+            Map<String, String> error = new HashMap<>();
+            error.put("mensaje", "Categoria con ID " + id + "no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> guardar(@RequestBody Categoria categoria) {

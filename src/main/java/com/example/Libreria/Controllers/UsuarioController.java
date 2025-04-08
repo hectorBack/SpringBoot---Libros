@@ -1,5 +1,6 @@
 package com.example.Libreria.Controllers;
 
+import com.example.Libreria.Entity.Autor;
 import com.example.Libreria.Entity.Libro;
 import com.example.Libreria.Entity.Usuario;
 import com.example.Libreria.Repository.UsuarioRepository;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -24,6 +26,19 @@ public class UsuarioController {
     @GetMapping
     public List<Usuario> listar() {
         return usuarioService.obtenerTodos();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPorId(@PathVariable Long id){
+        Optional<Usuario> usuario = usuarioService.obtenerPorId(id);
+
+        if (usuario.isPresent()) {
+            return ResponseEntity.ok(usuario.get());
+        } else {
+            Map<String, String> error = new HashMap<>();
+            error.put("mensaje", "Usuario con ID " + id + " no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        }
     }
 
     @PostMapping

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/autores")
@@ -23,6 +24,19 @@ public class AutorController {
     @GetMapping
     public List<Autor> listar() {
         return autorService.obtenerTodos();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPorId(@PathVariable Long id){
+        Optional<Autor> autor = autorService.obtenerPorId(id);
+
+        if (autor.isPresent()) {
+            return ResponseEntity.ok(autor.get());
+        } else {
+            Map<String, String> error = new HashMap<>();
+            error.put("mensaje", "Autor con ID " + id + " no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        }
     }
 
     @PostMapping
