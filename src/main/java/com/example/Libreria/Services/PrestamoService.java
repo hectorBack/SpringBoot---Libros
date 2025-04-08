@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PrestamoService {
@@ -22,6 +23,10 @@ public class PrestamoService {
 
     public List<Prestamo> obtenerTodos(){
         return prestamoRepository.findAll();
+    }
+
+    public Optional<Prestamo> obtenerPorId(Long id){
+        return prestamoRepository.findById(id);
     }
 
     public Prestamo guardar(Prestamo prestamo) {

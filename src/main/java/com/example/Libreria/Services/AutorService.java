@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AutorService {
@@ -15,6 +16,10 @@ public class AutorService {
 
     public List<Autor> obtenerTodos(){
         return autorRepository.findAll();
+    }
+
+    public Optional<Autor> obtenerPorId(Long id){
+        return autorRepository.findById(id);
     }
 
     public Autor guardar (Autor autor){
